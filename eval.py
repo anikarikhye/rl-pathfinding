@@ -4,14 +4,14 @@ from maze_env import MazeEnv
 from stable_baselines3 import PPO
  
  
-# 1. Load the exact maze structure from training
+
 with open("models/train_maze.pkl", "rb") as f:
     saved_maze = pickle.load(f)
  
-# 2. Re-create the environment
+
 env = MazeEnv(rows=15, cols=15, wall_prob=0.3, fixed_maze=True)
  
-# 3. Inject the exact same maze used during training
+
 env.maze = saved_maze
  
 if hasattr(saved_maze, 'start'):
@@ -19,15 +19,13 @@ if hasattr(saved_maze, 'start'):
 if hasattr(saved_maze, 'goal'):
     env.goal_pos = saved_maze.goal
  
-# 4. Load the trained model
+
 model = PPO.load("models/ppo_maze")
  
-# 5. Reset env — this sets agent_pos = maze.start and builds the correct 229-dim obs
+
 obs, _ = env.reset()
  
-# --- FIX: do NOT override agent_pos after reset without regenerating obs.
-# Previously: env.agent_pos = env.start_pos was called after reset, making obs stale.
-# Now: reset() already places the agent at start and returns fresh obs. No override needed.
+
  
 steps = 0
 reached_goal = False
