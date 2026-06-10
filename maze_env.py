@@ -49,18 +49,18 @@ class MazeEnv(gym.Env):
                 self.maze.grid[new_r][new_c] == 0):
             self.agent_pos = [new_r, new_c]
         else:
-            hit_wall = True  # stayed in place — wall or boundary
+            hit_wall = True  
  
         self.steps += 1
         reached_goal = tuple(self.agent_pos) == self.maze.goal
         timeout = self.steps >= self.max_steps
  
         if reached_goal:
-            reward = 200.0                          # big finish bonus
+            reward = 200.0                          
         elif hit_wall:
-            reward = -1.0                           # strong wall penalty
+            reward = -1.0                          
         else:
-            # distance-based shaping: reward for getting closer
+            
             dist = abs(self.agent_pos[0] - self.maze.goal[0]) + \
                    abs(self.agent_pos[1] - self.maze.goal[1])
             max_dist = self.rows + self.cols
