@@ -3,24 +3,24 @@ import time
 from maze_env import MazeEnv
 from stable_baselines3 import PPO
 
-# 1. Load the exact maze structure from training
+
 with open("models/train_maze.pkl", "rb") as f:
     saved_maze = pickle.load(f)
 
-# 2. Re-create the environment
+
 env = MazeEnv(rows=15, cols=15, wall_prob=0.3, fixed_maze=True)
 
-# 3. CRITICAL OVERWRITE: Force the env to use the exact same state
+
 env.maze = saved_maze
 if hasattr(saved_maze, 'start'):
     env.start_pos = saved_maze.start
 if hasattr(saved_maze, 'goal'):
     env.goal_pos = saved_maze.goal
 
-# 4. Load the trained model
+
 model = PPO.load("models/ppo_maze")
 
-# 5. Run deterministic evaluation
+
 obs, _ = env.reset()
 if hasattr(saved_maze, 'start'):
     env.agent_pos = env.start_pos
