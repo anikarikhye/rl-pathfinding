@@ -4,23 +4,23 @@ from maze_env import MazeEnv
 from stable_baselines3 import PPO
  
  
-# 1. Load the exact maze used during training
+
 with open("models/train_maze.pkl", "rb") as f:
     saved_maze = pickle.load(f)
  
-# 2. Reconstruct the environment with that maze
+
 env = MazeEnv(rows=15, cols=15, wall_prob=0.3, fixed_maze=True)
 env.maze = saved_maze
 env.agent_pos = list(saved_maze.start)
 env.steps = 0
  
-# 3. Load model
+
 model = PPO.load("models/ppo_maze")
  
-# --- FIX: build obs via _get_obs() (229-dim), not raw agent_pos (2-dim) ---
+
 obs = env._get_obs()
  
-print(f"Observation shape : {obs.shape}")   # should be (229,)
+print(f"Observation shape : {obs.shape}")   
 print(f"Start             : {saved_maze.start}")
 print(f"Goal              : {saved_maze.goal}")
 print(f"\nFirst 30 steps:")
