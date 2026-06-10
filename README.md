@@ -4,7 +4,7 @@ Comparing reinforcement learning (Q-Learning) against classical pathfinding algo
 
 What it does
 - Generates random mazes with guaranteed valid paths
-- Implements BFS, Dijkstra, and A* from scratch
+- Implements BFS and A* from scratch
 - Trains a Q-Learning agent to navigate the same mazes
 - Benchmarks all algorithms on path quality and inference speed
 
@@ -21,6 +21,7 @@ Tech Stack
 Python, NumPy, Matplotlib, Gymnasium, Stable-Baselines3
 
 Run it
+
 bash
 pip install numpy matplotlib gymnasium stable-baselines3
 python3 qlearning.py        
