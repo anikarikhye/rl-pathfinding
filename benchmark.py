@@ -10,8 +10,7 @@ from dijkstra import dijkstra
 from astar import astar
  
  
-# ── Classical algorithm wrappers that also count nodes explored ──────────────
- 
+
 def count_nodes_bfs(maze):
     queue = [maze.start]
     visited = set()
@@ -99,8 +98,7 @@ def count_nodes_astar(maze):
     return None, nodes_explored
  
  
-# ── RL agent evaluation ───────────────────────────────────────────────────────
- 
+
 def evaluate_rl(maze, model_path="models/ppo_maze"):
     """
     Run the trained PPO agent on the given maze.
@@ -114,7 +112,7 @@ def evaluate_rl(maze, model_path="models/ppo_maze"):
  
     model = PPO.load(model_path)
  
-    # --- FIX: always use _get_obs() for the 229-dim observation ---
+   
     obs = env._get_obs()
  
     path = [tuple(env.agent_pos)]
@@ -137,10 +135,10 @@ def evaluate_rl(maze, model_path="models/ppo_maze"):
     return path, steps, reached_goal, elapsed
  
  
-# ── Main ──────────────────────────────────────────────────────────────────────
+
  
 if __name__ == "__main__":
-    # Try to load the training maze so RL is compared on the same maze
+    
     try:
         with open("models/train_maze.pkl", "rb") as f:
             maze = pickle.load(f)
@@ -151,7 +149,7 @@ if __name__ == "__main__":
  
     results = []
  
-    # Classical algorithms
+   
     for name, fn in [
         ("BFS",      count_nodes_bfs),
         ("Dijkstra", count_nodes_dijkstra),
@@ -168,7 +166,7 @@ if __name__ == "__main__":
             "time_ms":        round(elapsed, 3),
         })
  
-    # RL agent — nodes_explored shown as steps taken
+
     rl_path, rl_steps, rl_reached, rl_time = evaluate_rl(maze)
     results.append({
         "name":           "RL (PPO)",
@@ -178,7 +176,7 @@ if __name__ == "__main__":
         "time_ms":        round(rl_time, 3),
     })
  
-    # Print table
+   
     print(f"\n{'Algorithm':<12} {'Path Len':<12} {'Nodes/Steps':<15} {'Reached':<10} {'Time (ms)'}")
     print("-" * 62)
     for r in results:
