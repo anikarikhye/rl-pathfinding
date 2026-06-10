@@ -31,6 +31,6 @@ print("Starting training on single fixed maze with RecurrentPPO...")
 print("-" * 50)
 model.learn(total_timesteps=300_000)
 
-# 5. Save the trained weights
+
 model.save("models/recurrent_ppo_maze")
 print("\nTraining complete! Recurrent Model saved.")
