@@ -20,7 +20,7 @@ def bfs(maze):
                 parent[neighbor] = node
                 queue.append(neighbor)
 
-    return None  # no path found
+    return None  
 
 def reconstruct_path(parent, goal):
     path = []
