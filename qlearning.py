@@ -9,15 +9,15 @@ class QLearningAgent:
         self.maze = maze
         self.rows = maze.rows
         self.cols = maze.cols
-        self.alpha = alpha        # learning rate
-        self.gamma = gamma        # discount factor
-        self.epsilon = epsilon    # exploration rate
+        self.alpha = alpha        
+        self.gamma = gamma        
+        self.epsilon = epsilon   
         self.epsilon_decay = epsilon_decay
         self.epsilon_min = epsilon_min
 
-        # Q-table: state = (row, col), actions = 0,1,2,3
+        
         self.q_table = np.zeros((maze.rows, maze.cols, 4))
-        self.moves = [(-1,0),(1,0),(0,-1),(0,1)]  # up down left right
+        self.moves = [(-1,0),(1,0),(0,-1),(0,1)] 
 
     def get_action(self, state):
         if np.random.random() < self.epsilon:
@@ -28,19 +28,19 @@ class QLearningAgent:
         dr, dc = self.moves[action]
         nr, nc = state[0] + dr, state[1] + dc
 
-        # check valid move
+
         if 0 <= nr < self.rows and 0 <= nc < self.cols and self.maze.grid[nr][nc] == 0:
             next_state = (nr, nc)
         else:
-            next_state = state  # stay in place if wall
+            next_state = state  
 
         # reward
         if next_state == self.maze.goal:
             reward = 100.0
         elif next_state == state:
-            reward = -1.0  # hit a wall
+            reward = -1.0  
         else:
-            reward = -0.1  # step penalty
+            reward = -0.1  
 
         return next_state, reward
 
@@ -59,7 +59,7 @@ class QLearningAgent:
                 action = self.get_action(state)
                 next_state, reward = self.step(state, action)
 
-                # Q-Learning update
+                
                 best_next = np.max(self.q_table[next_state[0], next_state[1]])
                 self.q_table[state[0], state[1], action] += self.alpha * (
                     reward + self.gamma * best_next - self.q_table[state[0], state[1], action]
@@ -73,7 +73,7 @@ class QLearningAgent:
                     successes += 1
                     break
 
-            # decay exploration
+           
             self.epsilon = max(self.epsilon_min, self.epsilon * self.epsilon_decay)
             rewards_per_episode.append(total_reward)
             steps_per_episode.append(steps)
@@ -92,7 +92,7 @@ class QLearningAgent:
 
         for _ in range(max_steps):
             if state in visited:
-                return None  # loop detected
+                return None  
             visited.add(state)
             action = np.argmax(self.q_table[state[0], state[1]])
             dr, dc = self.moves[action]
@@ -106,7 +106,7 @@ class QLearningAgent:
         return None
 
 if __name__ == "__main__":
-    # create and save maze
+    
     maze = Maze(rows=10, cols=10, wall_prob=0.2)
     with open("models/train_maze.pkl", "wb") as f:
         pickle.dump(maze, f)
@@ -117,11 +117,11 @@ if __name__ == "__main__":
     print("Training Q-Learning agent...")
     rewards, steps = agent.train(episodes=5000)
 
-    # save agent
+    
     with open("models/q_agent.pkl", "wb") as f:
         pickle.dump(agent, f)
 
-    # get learned path
+   
     path = agent.get_path()
     if path:
         print(f"\nAgent reached goal! Path length: {len(path)} steps")
